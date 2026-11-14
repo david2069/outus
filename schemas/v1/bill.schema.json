@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/david2069/outus/schemas/v1/bill.schema.json",
+  "title": "OUTUS bill",
+  "description": "One plan for one closed period, with line items that show their inputs.",
+  "type": "object",
+  "required": ["type", "version", "currency", "period_start", "period_end", "source", "status", "line_items", "net_total"],
+  "properties": {
+    "type": { "const": "outus/bill" },
+    "version": { "const": 1 },
+    "id": { "type": "string" },
+    "meter": { "$ref": "common.schema.json#/$defs/meter" },
+    "plan_id": { "type": "string" },
+    "plan_name": { "type": "string" },
+    "retailer": { "type": "string" },
+    "account_number": { "type": "string" },
+    "currency": { "$ref": "common.schema.json#/$defs/currency" },
+    "period_start": { "$ref": "common.schema.json#/$defs/timestamp" },
+    "period_end": { "$ref": "common.schema.json#/$defs/timestamp" },
+    "source": { "enum": ["calculated", "utility"] },
+    "status": { "enum": ["provisional", "final", "superseded"] },
+    "supersedes": { "type": "string", "description": "The id of the bill this one replaces." },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "amount"],
+        "properties": {
+          "tariff_id": { "type": ["string", "null"], "description": "null for plan-level charges." },
+          "charge_id": { "type": "string" },
+          "label": { "type": "string" },
+          "quantity": { "type": "number" },
+          "unit": { "type": "string" },
+          "rate": { "type": "number" },
+          "amount": { "type": "number", "description": "Positive = cost, negative = credit." },
+          "formula": { "type": "string", "examples": ["31 days × $1.10", "peak 4.2 kW (14 Aug 17:35) × $12.50"] },
+          "inputs": { "type": "object", "description": "The values the formula used." }
+        }
+      }
+    },
+    "tax": { "type": "number" },
+    "net_total": { "type": "number" }
+  }
+}

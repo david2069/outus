@@ -1,0 +1,253 @@
+{
+  "type": "outus/plan",
+  "version": 1,
+  "id": "example-us-tou-nbt",
+  "name": "Example TOU with net billing (illustrative rates)",
+  "retailer": {
+    "name": "Example Utility",
+    "country": "US"
+  },
+  "meter": {
+    "ref": "m1",
+    "commodity": "electricity",
+    "unit": "kWh",
+    "phases": 2,
+    "pto_status": "approved"
+  },
+  "currency": "USD",
+  "timezone": "America/Los_Angeles",
+  "effective_start": "2026-01-01",
+  "billing": {
+    "cycle": "monthly",
+    "cycle_day": 12
+  },
+  "tax": {
+    "rate": 0.0,
+    "rates_include_tax": true
+  },
+  "export_compensation": "net_billing",
+  "charges": [
+    {
+      "id": "base_services",
+      "label": "Base services charge",
+      "class": "period",
+      "basis": "per_day",
+      "rate": 0.79,
+      "unit": "day"
+    },
+    {
+      "id": "minimum",
+      "label": "Minimum bill",
+      "class": "period",
+      "basis": "minimum_bill",
+      "amount": 10.0
+    },
+    {
+      "id": "true_up",
+      "label": "Annual true-up",
+      "class": "period",
+      "basis": "true_up",
+      "true_up_month": 3
+    }
+  ],
+  "tariffs": [
+    {
+      "id": "general",
+      "name": "TOU",
+      "applies_to": "general",
+      "price_source": {
+        "kind": "static"
+      },
+      "charges": [
+        {
+          "id": "energy",
+          "label": "Energy",
+          "class": "interval",
+          "basis": "per_unit",
+          "unit": "kWh",
+          "rates": [
+            {
+              "window": {
+                "months": [
+                  6,
+                  7,
+                  8,
+                  9
+                ],
+                "start": "16:00",
+                "end": "21:00"
+              },
+              "band": "on_peak",
+              "rate": 0.62
+            },
+            {
+              "window": {
+                "start": "16:00",
+                "end": "21:00"
+              },
+              "band": "on_peak",
+              "rate": 0.49
+            },
+            {
+              "band": "off_peak",
+              "rate": 0.4
+            }
+          ]
+        },
+        {
+          "id": "baseline_credit",
+          "label": "Baseline credit",
+          "class": "period",
+          "basis": "tier",
+          "effect": "credit",
+          "unit": "kWh",
+          "baseline": {
+            "summer": 12.4,
+            "winter": 10.2
+          },
+          "tiers": [
+            {
+              "up_to": null,
+              "rate": 0.1
+            }
+          ],
+          "tier_per": "period"
+        },
+        {
+          "id": "nbc",
+          "label": "Non-bypassable charges",
+          "class": "interval",
+          "basis": "per_unit",
+          "unit": "kWh",
+          "rate": 0.03
+        }
+      ]
+    },
+    {
+      "id": "export",
+      "name": "Net billing export",
+      "applies_to": "export",
+      "charges": [
+        {
+          "id": "acc",
+          "label": "Export value",
+          "class": "interval",
+          "basis": "value_table",
+          "direction": "export",
+          "effect": "credit",
+          "unit": "kWh",
+          "value_table": {
+            "1": {
+              "weekday": [
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.09,
+                0.09,
+                0.09,
+                0.09,
+                0.09,
+                0.04,
+                0.04,
+                0.04
+              ],
+              "weekend": [
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.04,
+                0.08,
+                0.08,
+                0.08,
+                0.08,
+                0.08,
+                0.04,
+                0.04,
+                0.04
+              ]
+            },
+            "9": {
+              "weekday": [
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                2.1,
+                2.1,
+                2.1,
+                2.1,
+                2.1,
+                0.02,
+                0.02,
+                0.02
+              ],
+              "weekend": [
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                1.4,
+                1.4,
+                1.4,
+                1.4,
+                1.4,
+                0.02,
+                0.02,
+                0.02
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

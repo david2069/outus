@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/david2069/outus/schemas/v1/usage.schema.json",
+  "title": "OUTUS usage",
+  "description": "The ledger: metered quantity per channel, in fixed clock-aligned intervals, with the price and cost each interval was billed at.",
+  "type": "object",
+  "required": ["type", "version", "meter", "channels"],
+  "properties": {
+    "type": { "const": "outus/usage" },
+    "version": { "const": 1 },
+    "meter": { "$ref": "common.schema.json#/$defs/meter" },
+    "currency": { "$ref": "common.schema.json#/$defs/currency" },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["channel", "intervals"],
+        "properties": {
+          "channel": { "type": "string", "examples": ["general", "controlled_load", "ev"] },
+          "intervals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["start", "duration_s", "quantity_in"],
+              "properties": {
+                "start": { "$ref": "common.schema.json#/$defs/timestamp" },
+                "duration_s": { "type": "integer", "minimum": 60 },
+                "quantity_in": { "type": "number", "minimum": 0, "description": "Imported, in the meter's unit." },
+                "quantity_out": { "type": "number", "minimum": 0, "description": "Exported (electricity)." },
+                "peak_rate": { "type": "number", "minimum": 0, "description": "Highest average power in the interval, kW (electricity)." },
+                "source": { "enum": ["metered", "read", "estimated"], "default": "metered" },
+                "price": {
+                  "type": "object",
+                  "description": "What the interval was billed at.",
+                  "properties": {
+                    "import": { "type": "number" },
+                    "export": { "type": "number" },
+                    "kind": { "enum": ["static", "forecast", "estimate", "confirmed", "actual"] },
+                    "tariff_id": { "type": "string" }
+                  }
+                },
+                "cost": { "type": "number", "description": "Interval charges for this interval: import cost minus export credit." }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "outus/usage",
+  "version": 1,
+  "meter": { "ref": "m1", "commodity": "electricity", "unit": "kWh" },
+  "currency": "AUD",
+  "channels": [
+    {
+      "channel": "general",
+      "intervals": [
+        { "start": "2026-11-15T06:00:00Z", "duration_s": 300, "quantity_in": 0.12, "quantity_out": 0.0, "peak_rate": 1.6, "price": { "import": 0.52, "kind": "static", "tariff_id": "general" }, "cost": 0.0624 },
+        { "start": "2026-11-15T06:05:00Z", "duration_s": 300, "quantity_in": 0.0, "quantity_out": 0.21, "peak_rate": 0.0, "price": { "import": 0.52, "export": 0.05, "kind": "static", "tariff_id": "general" }, "cost": -0.0105 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "outus/price-series",
+  "version": 1,
+  "source": { "provider": "aemo", "region": "NSW1", "currency": "AUD", "unit": "kWh", "includes_tax": false, "all_in": false },
+  "intervals": [
+    { "start": "2026-11-15T06:00:00Z", "duration_s": 300, "import": 0.081, "export": 0.081, "kind": "actual", "fetched_at": "2026-11-15T06:06:10Z" },
+    { "start": "2026-11-15T06:05:00Z", "duration_s": 300, "import": 0.094, "export": 0.094, "kind": "confirmed", "fetched_at": "2026-11-15T06:10:12Z" },
+    { "start": "2026-11-15T06:10:00Z", "duration_s": 300, "import": 0.310, "export": 0.310, "kind": "forecast", "fetched_at": "2026-11-15T06:05:30Z", "spike": "potential" }
+  ]
+}

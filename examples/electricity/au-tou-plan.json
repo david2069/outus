@@ -1,0 +1,74 @@
+{
+  "type": "outus/plan",
+  "version": 1,
+  "id": "example-au-tou",
+  "name": "Example Solar TOU (illustrative rates)",
+  "plan_version": "2026-07-01",
+  "retailer": { "name": "Example Energy", "network": "Example DNSP", "country": "AU" },
+  "account_number": "0000000000",
+  "meter": { "ref": "m1", "commodity": "electricity", "unit": "kWh", "phases": 1, "pto_status": "approved", "pto_date": "2025-03-14" },
+  "currency": "AUD",
+  "timezone": "Australia/Sydney",
+  "effective_start": "2026-07-01",
+  "billing": { "cycle": "monthly", "cycle_day": 1 },
+  "tax": { "rate": 0.10, "rates_include_tax": true },
+  "export_compensation": "feed_in",
+  "charges": [
+    { "id": "supply", "label": "Daily supply", "class": "period", "basis": "per_day", "rate": 1.10, "unit": "day" }
+  ],
+  "tariffs": [
+    {
+      "id": "general",
+      "name": "General TOU",
+      "applies_to": "general",
+      "price_source": { "kind": "static" },
+      "charges": [
+        {
+          "id": "energy",
+          "label": "Energy",
+          "class": "interval",
+          "basis": "per_unit",
+          "unit": "kWh",
+          "rates": [
+            { "window": { "day_types": ["weekday", "weekend", "holiday"], "start": "16:00", "end": "21:00" }, "band": "on_peak", "rate": 0.52 },
+            { "window": { "start": "10:00", "end": "14:00" }, "band": "super_off_peak", "rate": 0.12 },
+            { "window": { "start": "07:00", "end": "16:00" }, "band": "mid_peak", "rate": 0.29 },
+            { "band": "off_peak", "rate": 0.22 }
+          ]
+        },
+        {
+          "id": "demand",
+          "label": "Peak demand",
+          "class": "period",
+          "basis": "demand",
+          "rate": 0.45,
+          "unit": "kW",
+          "window": { "months": [11, 12, 1, 2, 3, 6, 7, 8], "day_types": ["weekday"], "start": "16:00", "end": "21:00" },
+          "demand": { "method": "monthly_max", "interval_min": 30, "unit": "kW", "frequency": "per_day" }
+        }
+      ]
+    },
+    {
+      "id": "cl",
+      "name": "Controlled load",
+      "applies_to": "controlled_load",
+      "supply_hours": [ { "start": "22:00", "end": "24:00" }, { "start": "00:00", "end": "07:00" } ],
+      "charges": [
+        { "id": "cl_energy", "label": "Controlled load energy", "class": "interval", "basis": "per_unit", "unit": "kWh", "rate": 0.18 },
+        { "id": "cl_supply", "label": "Controlled load supply", "class": "period", "basis": "per_day", "rate": 0.05, "unit": "day" }
+      ]
+    },
+    {
+      "id": "export",
+      "name": "Feed-in",
+      "applies_to": "export",
+      "charges": [
+        { "id": "fit", "label": "Feed-in credit", "class": "interval", "basis": "per_unit", "direction": "export", "effect": "credit", "unit": "kWh", "rate": 0.05 },
+        { "id": "bonus", "label": "Export bonus", "class": "interval", "basis": "per_unit", "direction": "export", "effect": "credit", "unit": "kWh",
+          "rates": [ { "window": { "start": "17:00", "end": "19:00" }, "rate": 0.10 } ] },
+        { "id": "export_charge", "label": "Export charge", "class": "period", "basis": "excess_over_free_band", "direction": "export", "unit": "kWh", "rate": 0.012,
+          "window": { "start": "10:00", "end": "15:00" }, "free_band": { "quantity": 10, "per": "day" } }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/david2069/outus/schemas/v1/price-series.schema.json",
+  "title": "OUTUS price series",
+  "description": "Dynamic prices: each interval's rate at its start, held for its duration.",
+  "type": "object",
+  "required": ["type", "version", "source", "intervals"],
+  "properties": {
+    "type": { "const": "outus/price-series" },
+    "version": { "const": 1 },
+    "source": {
+      "type": "object",
+      "required": ["provider", "currency"],
+      "properties": {
+        "provider": { "type": "string" },
+        "region": { "type": "string" },
+        "currency": { "$ref": "common.schema.json#/$defs/currency" },
+        "unit": { "type": "string", "default": "kWh" },
+        "includes_tax": { "type": "boolean" },
+        "all_in": { "type": "boolean" }
+      }
+    },
+    "intervals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["start", "duration_s", "kind"],
+        "properties": {
+          "start": { "$ref": "common.schema.json#/$defs/timestamp", "description": "Clock-aligned." },
+          "duration_s": { "type": "integer", "minimum": 60 },
+          "import": { "type": ["number", "null"], "description": "Price per unit to buy." },
+          "export": { "type": ["number", "null"], "description": "Paid per unit exported; positive = paid to the customer." },
+          "kind": { "enum": ["forecast", "estimate", "confirmed", "actual"], "description": "A later kind replaces an earlier one for the same start and source." },
+          "fetched_at": { "$ref": "common.schema.json#/$defs/timestamp" },
+          "spike": { "enum": ["none", "potential", "spike"] },
+          "band": { "$ref": "common.schema.json#/$defs/band" }
+        }
+      }
+    }
+  }
+}

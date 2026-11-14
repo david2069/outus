@@ -1,0 +1,25 @@
+{
+  "type": "outus/bill",
+  "version": 1,
+  "id": "b-2026-10",
+  "meter": { "ref": "m1", "commodity": "electricity", "unit": "kWh" },
+  "plan_id": "example-au-tou",
+  "plan_name": "Example Solar TOU (illustrative rates)",
+  "retailer": "Example Energy",
+  "currency": "AUD",
+  "period_start": "2026-09-30T14:00:00Z",
+  "period_end": "2026-10-31T13:00:00Z",
+  "source": "calculated",
+  "status": "final",
+  "line_items": [
+    { "tariff_id": "general", "charge_id": "energy", "label": "Energy", "quantity": 412.3, "unit": "kWh", "amount": 104.27, "formula": "412.3 kWh × TOU rates (8,928 intervals)", "inputs": { "on_peak_kwh": 61.0, "mid_peak_kwh": 140.2, "off_peak_kwh": 170.8, "super_off_peak_kwh": 40.3 } },
+    { "tariff_id": "general", "charge_id": "demand", "label": "Peak demand", "quantity": 4.2, "unit": "kW", "rate": 0.45, "amount": 58.59, "formula": "peak 4.2 kW (14 Oct 17:30) × $0.45 × 31 days" },
+    { "tariff_id": "cl", "charge_id": "cl_energy", "label": "Controlled load energy", "quantity": 96.0, "unit": "kWh", "rate": 0.18, "amount": 17.28, "formula": "96.0 kWh × $0.18" },
+    { "tariff_id": "cl", "charge_id": "cl_supply", "label": "Controlled load supply", "quantity": 31, "unit": "day", "rate": 0.05, "amount": 1.55, "formula": "31 days × $0.05" },
+    { "tariff_id": "export", "charge_id": "fit", "label": "Feed-in credit", "quantity": 288.0, "unit": "kWh", "rate": 0.05, "amount": -14.40, "formula": "288.0 kWh × $0.05" },
+    { "tariff_id": "export", "charge_id": "export_charge", "label": "Export charge", "quantity": 22.5, "unit": "kWh", "rate": 0.012, "amount": 0.27, "formula": "22.5 kWh above 10 kWh/day free × $0.012" },
+    { "tariff_id": null, "charge_id": "supply", "label": "Daily supply", "quantity": 31, "unit": "day", "rate": 1.10, "amount": 34.10, "formula": "31 days × $1.10" }
+  ],
+  "tax": 18.33,
+  "net_total": 201.66
+}
