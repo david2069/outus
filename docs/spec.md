@@ -39,6 +39,7 @@ Site ─┬─ Meter (commodity, unit, phases, PTO)
 Rules:
 - **Rate tables:** windows are matched first-match-wins, and an entry without a window covers the rest of the time.
 - **Bands:** a TOU entry SHOULD name its `band`, one of FranklinWH's four: `super_off_peak`, `off_peak`, `mid_peak` or `on_peak`.
+- **Baseline:** a `tier` charge with a `baseline` (kWh per day by months) uses baseline × days as its first tier.
 - **Tiers:** a `tier` charge is cumulative over its `tier_per` (day or period). Producers MAY price intervals provisionally, and the close settles the tier.
 - **Demand:** a `demand` charge builds `interval_min` averages from the ledger inside its `window`, then applies its `method`.
 - **Direction and effect:** `direction` (import or export) and `effect` (cost or credit) give the sign. A bill line's `amount` is positive for a cost and negative for a credit.
@@ -59,6 +60,7 @@ Rules:
 - **Contents:** a bill covers one plan for one period, with `line_items` grouped by tariff and then plan-level charges, followed by tax and `net_total`.
 - **Line items:** each line SHOULD carry `quantity`, `unit`, `rate`, a human-readable `formula` and its `inputs`.
 - **Status:** `provisional` (the period hasn't ended yet), `final`, or `superseded`, which points to its replacement through the replacement's `supersedes`.
+- **Progress:** a provisional bill MAY carry `progress` (days elapsed, days, projected total).
 - **Source:** `calculated` (from the ledger) or `utility` (the utility's own figures, for example from HA Opower).
 
 ## 7. Documents

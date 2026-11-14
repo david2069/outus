@@ -20,9 +20,19 @@ Charges are either **interval** charges (worked out each interval: energy, feed-
 ## Examples
 `examples/electricity/` has an AU TOU plan (general, controlled load and feed-in tariffs), a US TOU plan with net billing, a price series, usage and a bill. **The rates are illustrative, not anyone's current tariff.**
 
-## Validate
+## Reference implementation (`outus`, Python ≥ 3.11, no dependencies)
+| Module | Job |
+|---|---|
+| `outus.ledger` | grid readings from the devices behind a meter → 5-minute usage intervals |
+| `outus.prices` | a price series: price at an interval's start, later kinds replace earlier ones |
+| `outus.billing` | an OUTUS bill from a plan and the ledger, with formulas; provisional bills project to the period's end; `now_rates` for the live band and rate |
+| `outus.periods` | billing period bounds (monthly, bimonthly, quarterly) |
+| `outus.plans` | checks a schema can't express (overlapping plans, wrong charge class, unpriced gaps) |
+| `outus.setup` | setup steps in order: site → meter → plan → tariffs |
+| `outus.profile_v1` | imports a `franklinwh-bridge/tariff-profile` v1 file as a plan |
+
 ```
-pip install jsonschema referencing pytest
+pip install -e ".[test]"
 pytest
 ```
 

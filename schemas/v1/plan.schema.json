@@ -4,73 +4,223 @@
   "title": "OUTUS plan",
   "description": "A customer's contract with a retailer for one meter: one or more tariffs, plus plan-level charges.",
   "type": "object",
-  "required": ["type", "version", "name", "currency", "billing", "tariffs"],
+  "required": [
+    "type",
+    "version",
+    "name",
+    "currency",
+    "billing",
+    "tariffs"
+  ],
   "properties": {
-    "type": { "const": "outus/plan" },
-    "version": { "const": 1 },
-    "id": { "type": "string" },
-    "name": { "type": "string" },
-    "plan_version": { "type": "string", "description": "The retailer's own version or date of the plan." },
+    "type": {
+      "const": "outus/plan"
+    },
+    "version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "plan_version": {
+      "type": "string",
+      "description": "The retailer's own version or date of the plan."
+    },
     "retailer": {
       "type": "object",
       "properties": {
-        "name": { "type": "string" },
-        "network": { "type": "string", "description": "Distribution network (AU DNSP) or US distribution utility." },
-        "country": { "type": "string", "pattern": "^[A-Z]{2}$" }
+        "name": {
+          "type": "string"
+        },
+        "network": {
+          "type": "string",
+          "description": "Distribution network (AU DNSP) or US distribution utility."
+        },
+        "country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$"
+        }
       }
     },
-    "account_number": { "type": "string" },
-    "meter": { "$ref": "common.schema.json#/$defs/meter" },
-    "currency": { "$ref": "common.schema.json#/$defs/currency" },
-    "timezone": { "type": "string", "description": "IANA zone, e.g. Australia/Sydney." },
-    "effective_start": { "$ref": "common.schema.json#/$defs/date" },
-    "effective_end": { "$ref": "common.schema.json#/$defs/date", "description": "Blank while the plan is in force." },
+    "account_number": {
+      "type": "string"
+    },
+    "meter": {
+      "$ref": "common.schema.json#/$defs/meter"
+    },
+    "currency": {
+      "$ref": "common.schema.json#/$defs/currency"
+    },
+    "timezone": {
+      "type": "string",
+      "description": "IANA zone, e.g. Australia/Sydney."
+    },
+    "effective_start": {
+      "$ref": "common.schema.json#/$defs/date"
+    },
+    "effective_end": {
+      "$ref": "common.schema.json#/$defs/date",
+      "description": "Blank while the plan is in force."
+    },
     "billing": {
       "type": "object",
-      "required": ["cycle"],
+      "required": [
+        "cycle"
+      ],
       "properties": {
-        "cycle": { "enum": ["monthly", "bimonthly", "quarterly"] },
-        "cycle_day": { "type": "integer", "minimum": 1, "maximum": 28, "default": 1 }
+        "cycle": {
+          "enum": [
+            "monthly",
+            "bimonthly",
+            "quarterly"
+          ]
+        },
+        "cycle_day": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 28,
+          "default": 1
+        }
       }
     },
     "tax": {
       "type": "object",
       "properties": {
-        "rate": { "type": "number", "minimum": 0, "description": "e.g. 0.10 for 10 % GST." },
-        "rates_include_tax": { "type": "boolean", "default": true }
+        "rate": {
+          "type": "number",
+          "minimum": 0,
+          "description": "e.g. 0.10 for 10 % GST."
+        },
+        "rates_include_tax": {
+          "type": "boolean",
+          "default": true
+        }
       }
     },
-    "export_compensation": { "enum": ["feed_in", "net_metering", "net_billing"] },
-    "charges": { "type": "array", "items": { "$ref": "#/$defs/charge" }, "description": "Plan-level charges (account supply, minimum bill, true-up, discounts)." },
-    "tariffs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/tariff" } }
+    "export_compensation": {
+      "enum": [
+        "feed_in",
+        "net_metering",
+        "net_billing"
+      ]
+    },
+    "charges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/charge"
+      },
+      "description": "Plan-level charges (account supply, minimum bill, true-up, discounts)."
+    },
+    "tariffs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/tariff"
+      }
+    }
   },
   "$defs": {
     "tariff": {
       "type": "object",
-      "required": ["id", "applies_to", "charges"],
+      "required": [
+        "id",
+        "applies_to",
+        "charges"
+      ],
       "properties": {
-        "id": { "type": "string" },
-        "name": { "type": "string" },
-        "applies_to": { "enum": ["general", "controlled_load", "export", "ev", "rider"], "description": "The channel this tariff prices." },
-        "supply_hours": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/window" }, "description": "Controlled load: when the supply is on." },
-        "price_source": { "$ref": "#/$defs/price_source" },
-        "charges": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/charge" } }
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "applies_to": {
+          "enum": [
+            "general",
+            "controlled_load",
+            "export",
+            "ev",
+            "rider"
+          ],
+          "description": "The channel this tariff prices."
+        },
+        "supply_hours": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/window"
+          },
+          "description": "Controlled load: when the supply is on."
+        },
+        "price_source": {
+          "$ref": "#/$defs/price_source"
+        },
+        "charges": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/charge"
+          }
+        }
       }
     },
     "price_source": {
       "description": "Where the tariff's per-kWh prices come from.",
       "oneOf": [
-        { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "static" } } },
         {
           "type": "object",
-          "required": ["kind", "provider", "settlement_interval_min"],
+          "required": [
+            "kind"
+          ],
           "properties": {
-            "kind": { "const": "series" },
-            "provider": { "type": "string", "examples": ["aemo", "amber", "ha_entity", "comed"] },
-            "region": { "type": "string", "examples": ["NSW1"] },
-            "settlement_interval_min": { "enum": [5, 15, 30, 60] },
-            "includes_tax": { "type": "boolean" },
-            "all_in": { "type": "boolean", "description": "true when the series already includes network and retail charges (e.g. Amber); false when `series_plus_adder` charges add them." }
+            "kind": {
+              "const": "static"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "provider",
+            "settlement_interval_min"
+          ],
+          "properties": {
+            "kind": {
+              "const": "series"
+            },
+            "provider": {
+              "type": "string",
+              "examples": [
+                "aemo",
+                "amber",
+                "ha_entity",
+                "comed"
+              ]
+            },
+            "region": {
+              "type": "string",
+              "examples": [
+                "NSW1"
+              ]
+            },
+            "settlement_interval_min": {
+              "enum": [
+                5,
+                15,
+                30,
+                60
+              ]
+            },
+            "includes_tax": {
+              "type": "boolean"
+            },
+            "all_in": {
+              "type": "boolean",
+              "description": "true when the series already includes network and retail charges (e.g. Amber); false when `series_plus_adder` charges add them."
+            }
           }
         }
       ]
@@ -80,84 +230,288 @@
       "description": "Rates by window, first match wins; `window` omitted = the rest of the time.",
       "items": {
         "type": "object",
-        "required": ["rate"],
+        "required": [
+          "rate"
+        ],
         "properties": {
-          "window": { "$ref": "common.schema.json#/$defs/window" },
-          "band": { "$ref": "common.schema.json#/$defs/band" },
-          "rate": { "type": "number" }
+          "window": {
+            "$ref": "common.schema.json#/$defs/window"
+          },
+          "band": {
+            "$ref": "common.schema.json#/$defs/band"
+          },
+          "rate": {
+            "type": "number"
+          }
         }
       }
     },
     "charge": {
       "type": "object",
-      "required": ["id", "class", "basis"],
+      "required": [
+        "id",
+        "class",
+        "basis"
+      ],
       "properties": {
-        "id": { "type": "string" },
-        "label": { "type": "string" },
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
         "class": {
-          "enum": ["interval", "period"],
+          "enum": [
+            "interval",
+            "period"
+          ],
           "description": "`interval`: worked out each interval from that interval's quantity and the rate in force at its start. `period`: worked out at the close from the period's ledger."
         },
         "basis": {
           "enum": [
-            "per_unit", "series", "series_plus_adder", "value_table",
-            "per_day", "per_month", "per_year",
-            "demand", "excess_over_free_band", "tier", "minimum_bill", "true_up", "percent_of_bill"
+            "per_unit",
+            "series",
+            "series_plus_adder",
+            "value_table",
+            "per_day",
+            "per_month",
+            "per_year",
+            "demand",
+            "excess_over_free_band",
+            "tier",
+            "minimum_bill",
+            "true_up",
+            "percent_of_bill"
           ]
         },
-        "direction": { "enum": ["import", "export"], "default": "import" },
-        "effect": { "enum": ["cost", "credit"], "default": "cost" },
-        "rate": { "type": "number", "description": "Per unit, per day, per month, per year, per kW, or a fraction for percent_of_bill." },
-        "unit": { "type": "string", "examples": ["kWh", "day", "month", "kW", "kVA"] },
-        "rates": { "$ref": "#/$defs/rate_table", "description": "per_unit / series_plus_adder: rates by window (TOU)." },
+        "direction": {
+          "enum": [
+            "import",
+            "export"
+          ],
+          "default": "import"
+        },
+        "effect": {
+          "enum": [
+            "cost",
+            "credit"
+          ],
+          "default": "cost"
+        },
+        "rate": {
+          "type": "number",
+          "description": "Per unit, per day, per month, per year, per kW, or a fraction for percent_of_bill."
+        },
+        "unit": {
+          "type": "string",
+          "examples": [
+            "kWh",
+            "day",
+            "month",
+            "kW",
+            "kVA"
+          ]
+        },
+        "rates": {
+          "$ref": "#/$defs/rate_table",
+          "description": "per_unit / series_plus_adder: rates by window (TOU)."
+        },
         "value_table": {
           "type": "object",
           "description": "value_table: a rate per month × day type × hour (e.g. US NEM 3.0 export values). Keys: month 1–12 → weekday|weekend → 24 rates.",
-          "additionalProperties": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "number" }, "minItems": 24, "maxItems": 24 } }
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 24,
+              "maxItems": 24
+            }
+          }
         },
         "tiers": {
           "type": "array",
           "description": "tier: cumulative quantity over the period (or per day when `tier_per` is day).",
-          "items": { "type": "object", "required": ["rate"], "properties": { "up_to": { "type": ["number", "null"] }, "rate": { "type": "number" } } }
+          "items": {
+            "type": "object",
+            "required": [
+              "rate"
+            ],
+            "properties": {
+              "up_to": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "rate": {
+                "type": "number"
+              }
+            }
+          }
         },
-        "tier_per": { "enum": ["day", "period"], "default": "period" },
-        "baseline": { "type": "object", "description": "US baseline allowance by season, per day.", "additionalProperties": { "type": "number" } },
+        "tier_per": {
+          "enum": [
+            "day",
+            "period"
+          ],
+          "default": "period"
+        },
+        "baseline": {
+          "type": "array",
+          "description": "US baseline allowance: kWh per day by months; the first tier's allowance is kwh_per_day × days.",
+          "items": {
+            "type": "object",
+            "required": [
+              "kwh_per_day"
+            ],
+            "properties": {
+              "months": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 12
+                }
+              },
+              "kwh_per_day": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        },
         "demand": {
           "type": "object",
           "properties": {
-            "method": { "enum": ["monthly_max", "top_n_avg", "daily_excess", "rolling_max", "event_avg"] },
-            "interval_min": { "enum": [5, 15, 30, 60] },
-            "n": { "type": "integer", "minimum": 1 },
-            "distinct_days": { "type": "boolean" },
-            "threshold": { "type": "number" },
-            "months": { "type": "integer", "minimum": 1 },
-            "lock_months": { "type": "integer", "minimum": 1 },
-            "min": { "type": "number", "minimum": 0 },
-            "unit": { "enum": ["kW", "kVA"], "default": "kW" },
-            "power_factor": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
-            "frequency": { "enum": ["per_day", "per_month"], "default": "per_month" }
+            "method": {
+              "enum": [
+                "monthly_max",
+                "top_n_avg",
+                "daily_excess",
+                "rolling_max",
+                "event_avg"
+              ]
+            },
+            "interval_min": {
+              "enum": [
+                5,
+                15,
+                30,
+                60
+              ]
+            },
+            "n": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "distinct_days": {
+              "type": "boolean"
+            },
+            "threshold": {
+              "type": "number"
+            },
+            "months": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "lock_months": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "min": {
+              "type": "number",
+              "minimum": 0
+            },
+            "unit": {
+              "enum": [
+                "kW",
+                "kVA"
+              ],
+              "default": "kW"
+            },
+            "power_factor": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1
+            },
+            "frequency": {
+              "enum": [
+                "per_day",
+                "per_month"
+              ],
+              "default": "per_month"
+            }
           }
         },
         "free_band": {
           "type": "object",
           "description": "excess_over_free_band: the quantity free per day, period or year before the rate applies.",
-          "required": ["quantity", "per"],
+          "required": [
+            "quantity",
+            "per"
+          ],
           "properties": {
-            "quantity": { "type": "number", "minimum": 0 },
-            "per": { "enum": ["day", "period", "year"] },
-            "rollover": { "type": "boolean", "default": false },
-            "workdays_only": { "type": "boolean", "default": false }
+            "quantity": {
+              "type": "number",
+              "minimum": 0
+            },
+            "per": {
+              "enum": [
+                "day",
+                "period",
+                "year"
+              ]
+            },
+            "rollover": {
+              "type": "boolean",
+              "default": false
+            },
+            "workdays_only": {
+              "type": "boolean",
+              "default": false
+            }
           }
         },
-        "amount": { "type": "number", "description": "minimum_bill: the minimum per period." },
-        "true_up_month": { "type": "integer", "minimum": 1, "maximum": 12 },
-        "window": { "$ref": "common.schema.json#/$defs/window" },
-        "proration": { "enum": ["days", "none"], "default": "days" },
-        "tax_rate": { "type": "number", "minimum": 0 },
+        "amount": {
+          "type": "number",
+          "description": "minimum_bill: the minimum per period."
+        },
+        "true_up_month": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "window": {
+          "$ref": "common.schema.json#/$defs/window"
+        },
+        "proration": {
+          "enum": [
+            "days",
+            "none"
+          ],
+          "default": "days"
+        },
+        "tax_rate": {
+          "type": "number",
+          "minimum": 0
+        },
         "linked": {
           "type": "object",
           "description": "A charge whose quantity comes from another channel or meter at a ratio (an extension point, e.g. sewerage from water).",
-          "properties": { "meter_ref": { "type": "string" }, "channel": { "type": "string" }, "ratio": { "type": "number" } }
+          "properties": {
+            "meter_ref": {
+              "type": "string"
+            },
+            "channel": {
+              "type": "string"
+            },
+            "ratio": {
+              "type": "number"
+            }
+          }
         }
       }
     }

@@ -3,44 +3,142 @@
   "$id": "https://github.com/david2069/outus/schemas/v1/common.schema.json",
   "title": "OUTUS v1 shared definitions",
   "$defs": {
-    "date": { "type": "string", "format": "date", "description": "ISO 8601 date, YYYY-MM-DD." },
-    "timestamp": { "type": "string", "format": "date-time", "description": "ISO 8601 instant in UTC, e.g. 2026-11-15T03:05:00Z." },
-    "hhmm": { "type": "string", "pattern": "^([01][0-9]|2[0-4]):[0-5][0-9]$", "description": "Local wall-clock time; 24:00 ends a day." },
-    "currency": { "type": "string", "pattern": "^[A-Z]{3}$", "description": "ISO 4217 code." },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO 8601 date, YYYY-MM-DD."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 instant in UTC, e.g. 2026-11-15T03:05:00Z."
+    },
+    "hhmm": {
+      "type": "string",
+      "pattern": "^([01][0-9]|2[0-4]):[0-5][0-9]$",
+      "description": "Local wall-clock time; 24:00 ends a day."
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 4217 code."
+    },
     "commodity": {
       "type": "string",
       "description": "What the meter measures. OUTUS v1 specifies `electricity`; other values are extensions and are preserved, never dropped.",
-      "examples": ["electricity", "gas", "water"]
+      "examples": [
+        "electricity",
+        "gas",
+        "water"
+      ]
     },
     "band": {
       "type": "string",
       "description": "FranklinWH's four TOU bands.",
-      "enum": ["super_off_peak", "off_peak", "mid_peak", "on_peak"]
+      "enum": [
+        "super_off_peak",
+        "off_peak",
+        "mid_peak",
+        "on_peak"
+      ]
     },
     "window": {
       "type": "object",
       "description": "When something applies. Omitted parts mean always.",
       "properties": {
-        "months": { "type": "array", "items": { "type": "integer", "minimum": 1, "maximum": 12 }, "uniqueItems": true },
-        "day_types": { "type": "array", "items": { "enum": ["weekday", "weekend", "holiday"] }, "uniqueItems": true },
-        "start": { "$ref": "#/$defs/hhmm" },
-        "end": { "$ref": "#/$defs/hhmm" },
-        "holiday_region": { "type": "string", "description": "Public holidays by region, e.g. AU-NSW, US-CA." },
-        "clock": { "enum": ["local", "standard"], "default": "local", "description": "`standard` ignores daylight saving." }
+        "months": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "uniqueItems": true
+        },
+        "day_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "weekday",
+              "weekend",
+              "holiday"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "start": {
+          "$ref": "#/$defs/hhmm"
+        },
+        "end": {
+          "$ref": "#/$defs/hhmm"
+        },
+        "holiday_region": {
+          "type": "string",
+          "description": "Public holidays by region, e.g. AU-NSW, US-CA."
+        },
+        "clock": {
+          "enum": [
+            "local",
+            "standard"
+          ],
+          "default": "local",
+          "description": "`standard` ignores daylight saving."
+        },
+        "days": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          },
+          "uniqueItems": true,
+          "description": "Weekday numbers, Monday 0: for windows that day_types can't express."
+        }
       }
     },
     "meter": {
       "type": "object",
-      "required": ["ref", "commodity"],
+      "required": [
+        "ref",
+        "commodity"
+      ],
       "properties": {
-        "ref": { "type": "string", "description": "The meter's id in the producing system." },
-        "commodity": { "$ref": "#/$defs/commodity" },
-        "unit": { "type": "string", "default": "kWh" },
-        "meter_number": { "type": "string", "description": "NMI (AU), service ID (US) or similar." },
-        "phases": { "enum": [1, 2, 3] },
-        "pto_status": { "enum": ["unknown", "pending", "approved", "not_required"] },
-        "pto_date": { "$ref": "#/$defs/date" },
-        "pto_reference": { "type": "string" }
+        "ref": {
+          "type": "string",
+          "description": "The meter's id in the producing system."
+        },
+        "commodity": {
+          "$ref": "#/$defs/commodity"
+        },
+        "unit": {
+          "type": "string",
+          "default": "kWh"
+        },
+        "meter_number": {
+          "type": "string",
+          "description": "NMI (AU), service ID (US) or similar."
+        },
+        "phases": {
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        "pto_status": {
+          "enum": [
+            "unknown",
+            "pending",
+            "approved",
+            "not_required"
+          ]
+        },
+        "pto_date": {
+          "$ref": "#/$defs/date"
+        },
+        "pto_reference": {
+          "type": "string"
+        }
       }
     }
   }

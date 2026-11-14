@@ -101,10 +101,20 @@
           "basis": "tier",
           "effect": "credit",
           "unit": "kWh",
-          "baseline": {
-            "summer": 12.4,
-            "winter": 10.2
-          },
+          "baseline": [
+            {
+              "months": [
+                6,
+                7,
+                8,
+                9
+              ],
+              "kwh_per_day": 12.4
+            },
+            {
+              "kwh_per_day": 10.2
+            }
+          ],
           "tiers": [
             {
               "up_to": null,
