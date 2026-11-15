@@ -1,0 +1,22 @@
+name: Release the spec
+# On a spec-v* tag: check the schemas, then publish a GitHub release with the schemas and
+# examples attached. The spec is versioned on its own; implementations live elsewhere.
+on:
+  push:
+    tags: ['spec-v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pytest "jsonschema>=4.18" referencing rfc3339-validator
+      - run: pytest -q
+      - run: zip -r "outus-${GITHUB_REF_NAME#spec-v}.zip" schemas examples docs/spec.md LICENSE
+      - run: gh release create "$GITHUB_REF_NAME" "outus-${GITHUB_REF_NAME#spec-v}.zip" --title "OUTUS ${GITHUB_REF_NAME#spec-v}" --notes-file CHANGELOG.md
+        env:
+          GH_TOKEN: ${{ github.token }}

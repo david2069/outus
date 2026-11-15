@@ -6,7 +6,7 @@ Tariffs are entered once and exchanged as files. Any integration can read, write
 
 - **v1 specifies electricity.** `commodity` and `unit` are open, so others (Home Assistant integrations, for example) can add gas, water and more as extensions.
 - **Status:** draft 0.1. The [spec](docs/spec.md) and the [JSON Schemas](schemas/v1/) define it.
-- **Used by:** the FranklinWH Direct Connect and Modbus bridges (through `franklinwh-hems`).
+- **Implemented by:** [hems](https://github.com/david2069/hems) (Python), used by the FranklinWH Direct Connect and Modbus bridges.
 
 | Document | What it holds |
 |---|---|
@@ -20,21 +20,22 @@ Charges are either **interval** charges (worked out each interval: energy, feed-
 ## Examples
 `examples/electricity/` has an AU TOU plan (general, controlled load and feed-in tariffs), a US TOU plan with net billing, a price series, usage and a bill. **The rates are illustrative, not anyone's current tariff.**
 
-## Reference implementation (`outus`, Python ≥ 3.11, no dependencies)
-| Module | Job |
-|---|---|
-| `outus.ledger` | grid readings from the devices behind a meter → 5-minute usage intervals |
-| `outus.prices` | a price series: price at an interval's start, later kinds replace earlier ones |
-| `outus.billing` | an OUTUS bill from a plan and the ledger, with formulas; provisional bills project to the period's end; `now_rates` for the live band and rate |
-| `outus.periods` | billing period bounds (monthly, bimonthly, quarterly) |
-| `outus.plans` | checks a schema can't express (overlapping plans, wrong charge class, unpriced gaps) |
-| `outus.setup` | setup steps in order: site → meter → plan → tariffs |
-| `outus.profile_v1` | imports a `franklinwh-bridge/tariff-profile` v1 file as a plan |
+## Implementations
+| Implementation | Language | Notes |
+|---|---|---|
+| [hems](https://github.com/david2069/hems) | Python | ledger, prices, explainable bills, plan checks; used by the FranklinWH Direct Connect and Modbus bridges |
 
+Others are welcome; an implementation should validate what it writes against `schemas/v1/`.
+
+## Checking the schemas
 ```
-pip install -e ".[test]"
+pip install pytest "jsonschema>=4.18" referencing rfc3339-validator
 pytest
 ```
+
+## Releases
+The spec is versioned on its own: a `spec-v*` tag publishes a GitHub release with the
+schemas and examples attached.
 
 ## Licence
 MIT
